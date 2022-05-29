@@ -1,0 +1,39 @@
+#include <iostream>
+#include <math.h>
+using namespace std;
+
+class Shape {
+public:
+virtual double area()=0;
+};
+class Point2D{
+public:
+int x;
+int y;
+public:
+Point2D() {}
+Point2D(double a, double b):x(a),y(b){}
+double getX() {return x;}
+double getY() {return y;}
+double distance(Point2D p)const{return sqrt(pow(x - p.x, 2) + pow(y - p.y, 2));}
+};
+class Rectangle:public Shape{
+Point2D b_f, b_a, j_a, j_f;
+public:
+Rectangle(Point2D a,Point2D b,Point2D c,Point2D d){b_f=a;b_a=b;j_a=c;j_f=d;}
+virtual double area() override{
+    return b_f.distance(b_a) * b_a.distance(j_a);
+}
+};
+
+int main()
+{
+static_assert(std::is_abstract<Shape>(), "Shape-nek absztrakt osztalynak kell lennie!");
+Point2D myPoint1(3, 4);
+Point2D myPoint2(4, 6);
+Shape* s1 = new Rectangle(Point2D(10,1), Point2D(10,-3), Point2D(12,-3), Point2D(12,1));
+std::cout << "2-es jegyert:" << std::endl;
+std::cout << "myPoint1 es myPoint2 kozotti tavolsag: " << myPoint1.distance(myPoint2) << std::endl;
+std::cout << "s1 terulete: " << s1->area() << std::endl;
+delete s1;
+}
