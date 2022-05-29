@@ -5,6 +5,7 @@ using namespace std;
 class Shape {
 public:
 virtual double area()=0;
+virtual ~Shape(){}
 };
 class Point2D{
 public:
@@ -25,15 +26,28 @@ virtual double area() override{
     return b_f.distance(b_a) * b_a.distance(j_a);
 }
 };
-
+class Circle : public Shape
+{
+Point2D center;
+double atmero;
+public:
+Circle(Point2D a,double d):center(a),atmero(d){}
+virtual double area() override{
+    return pow(atmero,2)*3.14;
+}
+virtual ~Circle(){}
+};
 int main()
 {
 static_assert(std::is_abstract<Shape>(), "Shape-nek absztrakt osztalynak kell lennie!");
 Point2D myPoint1(3, 4);
 Point2D myPoint2(4, 6);
 Shape* s1 = new Rectangle(Point2D(10,1), Point2D(10,-3), Point2D(12,-3), Point2D(12,1));
+Shape* s2 = new Circle(Point2D(6, 9), 2);
 std::cout << "2-es jegyert:" << std::endl;
 std::cout << "myPoint1 es myPoint2 kozotti tavolsag: " << myPoint1.distance(myPoint2) << std::endl;
 std::cout << "s1 terulete: " << s1->area() << std::endl;
+std::cout << "s2 terulete: " << s2->area() << std::endl;
 delete s1;
+delete s2;
 }
