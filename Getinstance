@@ -1,0 +1,48 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+class Oltas {
+    string name="Pfizer";
+public:
+    Oltas() {}
+    Oltas(const string& t) { name = t;}
+    string getName() { return name; }
+    virtual string getType() = 0;
+};
+class Pfizer : public Oltas {
+    Pfizer(){}
+    Pfizer(string t) : Oltas(t) {}
+    static Pfizer* instance;
+public:
+    Pfizer(Pfizer&) = delete;
+    Pfizer& operator =(Pfizer&) = delete;
+    static Pfizer* GetInstance() {
+        if (instance == 0)
+        {
+            instance = new Pfizer();
+        }
+
+        return instance; }
+    string getType() { return "mRNA"; }
+};
+Pfizer* Pfizer::instance = NULL;
+int main()
+
+{
+
+    static_assert(std::is_abstract<Oltas>(), "Oltas-nak absztrakt osztalynak kell lennie!");
+
+    Oltas* pfizer = Pfizer::GetInstance();
+
+    Oltas* pfizer2 = Pfizer::GetInstance();
+
+    if (pfizer == pfizer2) {
+
+        std::cout << "Igen, pfizer es pfizer2 cime ugyanaz!" << std::endl;
+
+    }
+
+    std::cout << "Pfizer neve es tipusa: " << pfizer->getName() << ", " << pfizer->getType() << std::endl;
+    return 0;
+}
