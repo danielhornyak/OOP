@@ -1,0 +1,75 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+
+class Sports {
+protected:
+    double distance;
+    double time;
+public:
+    virtual double getatlag() = 0;
+    Sports(double distance, double time) :distance(distance), time(time) {}
+    virtual void computerSaveAndPrintAvrage() = 0;
+    virtual ~Sports() = default;
+};
+
+class Swimming : public Sports {
+    const int a = 100;
+public:
+    Swimming(double distance, double time) : Sports(distance, time) {}
+    virtual void computerSaveAndPrintAvrage() override {
+        cout << "Az uszas atlaga: " << time / (distance / a) << " s / 100 m" << endl;
+    }
+    double getatlag() override {
+        return time / (distance / a);
+    }
+};
+
+class Cycling : public Sports {
+    const int b = 1000;
+    const int c = 3600;
+public:
+    Cycling(double distance, double time) : Sports(distance, time) {}
+    virtual void computerSaveAndPrintAvrage() override {
+        cout << "A kerekparozas atlaga: " << (distance / b) / (time / c) << " km / h" << endl;
+    }
+    double getatlag() override {
+        return (distance / b) / (time / c);
+    }
+};
+class Running : public Sports {
+    const int d = 60;
+    const int e = 1000;
+public:
+    Running(double distance, double time) : Sports(distance, time) {}
+    virtual void computerSaveAndPrintAvrage() override {
+        cout << "Az uszas atlaga: " << (time / d) / (distance / e) << " min / km" << endl;
+    }
+    double getatlag() override {
+        return (time / d) / (distance / e);
+    }
+};
+void printAverages(std::vector<Sports*> allSports) {
+    int i = 0;
+    for (auto t : allSports) {
+        i++;
+        cout << t->getatlag();
+        if (i < allSports.size()) {
+            cout << " - ";
+        }
+    }
+};
+int main() {
+    Sports* sp1 = new Swimming(1500, 1441);
+    Sports* sp2 = new Cycling(40000, 4801);
+    Sports* sp3 = new Running(10000, 2401);
+
+    sp1->computerSaveAndPrintAvrage();
+    sp2->computerSaveAndPrintAvrage();
+    sp3->computerSaveAndPrintAvrage();
+    std::vector<Sports*>allSports = { sp1,sp2,sp3 };
+    printAverages(allSports);
+    delete sp1;
+    delete sp2;
+    delete sp3;
+}
